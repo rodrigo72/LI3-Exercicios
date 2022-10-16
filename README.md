@@ -1,2 +1,2 @@
-# LI3 - Exercicios
+# LI3 - Exercícios
 - *make run* - para executar
