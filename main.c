@@ -83,20 +83,22 @@ int main(int argc, char **argv) {
     } else {
         char *filename = argv[1];
         fp = fopen(filename, "r");
+
         if (fp == NULL) {
             perror("Error");
             return 2;
         } 
-    }
 
-    while((read = getline(&line, &len, fp)) != -1) {
-        if (line[read-1] == '\n') line[read-1] = '\0';
-        Cmd *command = parse_line(line);
-        process_command(deque, command);
+        while((read = getline(&line, &len, fp)) != -1) {
+            if (line[read-1] == '\n') line[read-1] = '\0';
+            Cmd *command = parse_line(line);
+            process_command(deque, command);
+        }
+
+        fclose(fp);
+        free(line);
     }
         
-    free(line);
     destroy(deque);
-
     return 0;
 }

@@ -81,24 +81,28 @@ void process_command_2(Deque *deque, Cmd* cmd) {
 
 Cmd *parse_line(char* line) {
     Cmd *cmd_struct = malloc(sizeof(struct cmd));
-    cmd_struct->args = malloc(sizeof(int)*MAX_ARGS);
     cmd_struct->nargs = 0;
     
     char *r = strdup(line);
     char *tok = r, *end = r;
 
     if (tok != NULL) {
+        cmd_struct->args = malloc(sizeof(int)*MAX_ARGS);
+        
         strsep(&end, " ");
         cmd_struct->command = strdup(tok);
         tok = end;
+    
+        while (tok != NULL) {
+            strsep(&end, " ");
+            cmd_struct->args[cmd_struct->nargs] = strtol(tok, NULL, 10);
+            cmd_struct->nargs++;
+            tok = end;
+        }
+    } else {
+        cmd_struct->args = NULL;
     }
     
-    while (tok != NULL) {
-        strsep(&end, " ");
-        cmd_struct->args[cmd_struct->nargs] = strtol(tok, NULL, 10);
-        cmd_struct->nargs++;
-        tok = end;
-    }
 
     free(r);
     return cmd_struct;
